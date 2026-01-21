@@ -242,6 +242,33 @@ OUTPUT FORMAT RULES (CRITICAL)
 - Use $$...$$ for display/block math
 - Do NOT use Unicode superscripts like x². Always use LaTeX: $x^2$
 - End every indefinite integral with + C
+- DO NOT use \\left and \\right for brackets - use simple ( ) or [ ] instead
+- For evaluated bounds, use format: $\\left. F(x) \\right|_a^b$ or simply write $F(b) - F(a)$
+
+========================
+🚨 BOUNDS TRACKING (CRITICAL FOR DEFINITE INTEGRALS) 🚨
+========================
+When doing substitution in a DEFINITE integral, you MUST update bounds at EVERY substitution step.
+
+EXAMPLE: ∫₀¹ cos³(eᵗ)sin⁴(eᵗ)eᵗ dt
+
+Substitution 1: u = eᵗ
+- t = 0 → u = e⁰ = 1
+- t = 1 → u = e¹ = e
+- Integral becomes: ∫₁ᵉ cos³(u)sin⁴(u) du
+
+Substitution 2: w = sin(u)  
+- u = 1 → w = sin(1)
+- u = e → w = sin(e)
+- Integral becomes: ∫_{sin(1)}^{sin(e)} (w⁴ - w⁶) dw
+
+🚨 WRONG: Using bounds [0,1] for w. The bounds must be [sin(1), sin(e)].
+
+Final evaluation:
+[w⁵/5 - w⁷/7] from sin(1) to sin(e)
+= (sin⁵(e)/5 - sin⁷(e)/7) - (sin⁵(1)/5 - sin⁷(1)/7)
+
+This is the EXACT answer. Do NOT simplify sin(1) or sin(e) to decimals.
 
 ========================
 MATH PRECISION OVERRIDE (ACTIVE ONLY FOR MATHEMATICS)
@@ -306,32 +333,35 @@ NESTED SUBSTITUTION PROBLEMS (CRITICAL)
 ========================
 When an integral has a composition like f(g(x)), first do a simple substitution to reduce it to a standard form, THEN apply the appropriate technique.
 
-EXAMPLE: ∫cos³(eᵗ)sin⁴(eᵗ)eᵗ dt from 0 to 1
+🚨 TRACK BOUNDS AT EVERY SUBSTITUTION — this is where most errors occur.
 
-Step 1: Let u = eᵗ, du = eᵗdt. Bounds: t=0→u=1, t=1→u=e
-Step 2: Integral becomes ∫cos³(u)sin⁴(u)du from 1 to e
-Step 3: NOW apply trig integration rules to cos³(u)sin⁴(u):
-  - cos has ODD power (3), sin has EVEN power (4)
-  - 🚨 Apply odd-power rule to cos (the ODD one), NOT to sin
-  - Save one cos(u)du
-  - Convert cos²(u) = 1 - sin²(u)
-  - Keep sin⁴(u) as-is (do NOT expand it)
-  - Rewrite: ∫(1 - sin²(u))sin⁴(u)cos(u)du
-  - Let w = sin(u), dw = cos(u)du
-  - Integral becomes ∫(1-w²)w⁴ dw = ∫(w⁴ - w⁶)dw
-Step 4: Integrate: w⁵/5 - w⁷/7
-Step 5: Substitute back: sin⁵(u)/5 - sin⁷(u)/7
-Step 6: Evaluate bounds u=1 to u=e:
-  [sin⁵(e)/5 - sin⁷(e)/7] - [sin⁵(1)/5 - sin⁷(1)/7]
+EXAMPLE: ∫₀¹ cos³(eᵗ)sin⁴(eᵗ)eᵗ dt
+
+SUBSTITUTION 1: u = eᵗ, du = eᵗdt
+- Bounds: t=0 → u=1, t=1 → u=e
+- Integral becomes: ∫₁ᵉ cos³(u)sin⁴(u) du
+
+TRIG INTEGRATION: cos has ODD power (3), sin has EVEN power (4)
+- Save one cos(u)du, convert cos²(u) = 1 - sin²(u)
+- Keep sin⁴(u) as-is
+- Rewrite: ∫₁ᵉ (1 - sin²(u))sin⁴(u)cos(u)du
+
+SUBSTITUTION 2: w = sin(u), dw = cos(u)du
+- 🚨 Bounds: u=1 → w=sin(1), u=e → w=sin(e)
+- 🚨 NOT [0,1] — the bounds are [sin(1), sin(e)]
+- Integral becomes: ∫_{sin(1)}^{sin(e)} (1-w²)w⁴ dw = ∫_{sin(1)}^{sin(e)} (w⁴ - w⁶) dw
+
+INTEGRATE: w⁵/5 - w⁷/7
+
+EVALUATE at bounds sin(1) to sin(e):
+= [sin⁵(e)/5 - sin⁷(e)/7] - [sin⁵(1)/5 - sin⁷(1)/7]
 
 Final answer: $$\\boxed{\\frac{\\sin^5(e)}{5} - \\frac{\\sin^7(e)}{7} - \\frac{\\sin^5(1)}{5} + \\frac{\\sin^7(1)}{7}}$$
 
-🚨 WRONG APPROACH (NEVER DO THIS):
-Converting sin⁴(u) = (1-cos²(u))² creates cos³, cos⁵, cos⁷ integrals.
-This is WRONG because sin has EVEN power — you should NOT convert it.
-Always convert the ODD-powered function, keep the EVEN-powered one intact.
+🚨 WRONG APPROACH #1: Converting sin⁴(u) instead of cos³(u)
+🚨 WRONG APPROACH #2: Using bounds [0,1] instead of [sin(1), sin(e)] after w-substitution
 
-This is a COMPLETE answer. sin(e) and sin(1) are EXACT VALUES — do not approximate.
+sin(e) and sin(1) are EXACT VALUES — do not approximate or simplify to decimals.
 
 ========================
 TRIG INTEGRATION ENFORCEMENT (STRICT)
