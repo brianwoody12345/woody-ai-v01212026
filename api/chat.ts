@@ -34,6 +34,32 @@ Applications of integration
 
 Never explain why a method was rejected — only why the chosen method applies.
 
+========================
+🚨 METHOD PRIORITY (CRITICAL) 🚨
+========================
+Before choosing a method, classify the integrand:
+
+1. TRIG POWERS ONLY (sin^m, cos^n, tan^m, sec^n, etc.)
+   → MUST use Trigonometric Integration rules. NEVER use IBP.
+
+2. POLYNOMIAL × TRIG or POLYNOMIAL × EXPONENTIAL
+   → Use IBP Type I (tabular method)
+
+3. EXPONENTIAL × TRIG (like e^x·sin(x))
+   → Use IBP Type II (tabular method)
+
+4. ln(x) or INVERSE TRIG alone
+   → Use IBP Type III with dv = 1
+
+5. √(a² - x²), √(x² + a²), √(x² - a²)
+   → Use Trig Substitution
+
+6. RATIONAL FUNCTION (polynomial/polynomial)
+   → Use Partial Fractions
+
+IBP is FORBIDDEN for integrals containing only trig functions with powers.
+========================
+
 TECHNIQUES OF INTEGRATION
 Integration by Parts (IBP)
 
@@ -130,13 +156,15 @@ Trigonometric Substitution
 Always identify type first. Always convert back to x.
 
 ========================
-TRIGONOMETRIC INTEGRATION (STRICT PLAN)
+🚨 TRIGONOMETRIC INTEGRATION (STRICT PLAN) — USE BEFORE IBP 🚨
 ========================
+
+CRITICAL: If an integral contains ONLY trig functions (sin, cos, tan, sec, csc, cot) with powers, this is a TRIG INTEGRATION problem, NOT an IBP problem. Do NOT use Integration by Parts for these.
 
 Always explicitly state the Pythagorean identity used:
 
 sin²x + cos²x = 1
-1 + tan²x = sec²x
+1 + tan²x = sec²x  →  tan²x = sec²x - 1
 1 + cot²x = csc²x
 
 --- sin / cos ---
@@ -145,19 +173,43 @@ One power odd → save one factor, convert rest using sin²x + cos²x = 1, subst
 
 Both powers even → use half-angle identities, then integrate.
 
---- sec / tan ---
+--- sec / tan (CRITICAL - FOLLOW EXACTLY) ---
 
-Power of sec even → save sec²x dx, convert rest using 1 + tan²x = sec²x, u = tan x.
+CASE 1: Power of sec is EVEN (sec², sec⁴, sec⁶, ...)
+→ Save sec²x dx
+→ Convert remaining sec^(2k) using sec²x = 1 + tan²x
+→ Let u = tan x, du = sec²x dx
+→ Integrate polynomial in u, substitute back
 
-Otherwise save derivative pair when present.
+CASE 2: Power of tan is ODD and sec is present
+→ Save sec(x)tan(x) dx (this is the derivative of sec x)
+→ Convert remaining tan^(2k) using tan²x = sec²x - 1
+→ Let u = sec x, du = sec(x)tan(x) dx
+→ Integrate polynomial in u, substitute back
+
+EXAMPLE for ∫tan³(θ)sec³(θ)dθ:
+- tan has ODD power (3), sec is present → Use CASE 2
+- Rewrite as: ∫tan²(θ)sec²(θ) · sec(θ)tan(θ)dθ
+- Save sec(θ)tan(θ)dθ = du where u = sec(θ)
+- Convert tan²(θ) = sec²(θ) - 1 = u² - 1
+- Integral becomes: ∫(u² - 1)u² du = ∫(u⁴ - u²)du
+- Integrate: u⁵/5 - u³/3 + C
+- Substitute back: sec⁵(θ)/5 - sec³(θ)/3 + C
 
 --- csc / cot ---
 
-Power of csc even → save csc²x dx, convert rest using 1 + cot²x = csc²x, u = −cot x.
+CASE 1: Power of csc is EVEN
+→ Save csc²x dx
+→ Convert remaining using csc²x = 1 + cot²x
+→ Let u = cot x, du = -csc²x dx
 
-Otherwise save derivative pair when present.
+CASE 2: Power of cot is ODD and csc is present
+→ Save csc(x)cot(x) dx (this is -d(csc x))
+→ Convert remaining cot^(2k) using cot²x = csc²x - 1
+→ Let u = csc x, du = -csc(x)cot(x) dx
 
 Never guess substitutions. Follow the plan exactly.
+Never use IBP for pure trig power integrals.
 
 Partial Fractions
 
