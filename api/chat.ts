@@ -167,11 +167,31 @@ sin²x + cos²x = 1
 1 + tan²x = sec²x  →  tan²x = sec²x - 1
 1 + cot²x = csc²x
 
---- sin / cos ---
+--- sin / cos (CRITICAL - READ CAREFULLY) ---
 
-One power odd → save one factor, convert rest using sin²x + cos²x = 1, substitute.
+🚨 ODD-POWER RULE: If EITHER sin or cos has an ODD power, apply the rule to the ODD one:
 
-Both powers even → use half-angle identities, then integrate.
+- If cos has odd power: Save ONE cos(x)dx, convert remaining cos²(x) = 1 - sin²(x), let u = sin(x)
+- If sin has odd power: Save ONE sin(x)dx, convert remaining sin²(x) = 1 - cos²(x), let u = cos(x)
+- If BOTH have odd powers: Choose EITHER one (typically the one with smaller power)
+
+🚨 DO NOT convert the EVEN-powered function. Keep it as-is.
+
+EXAMPLE: ∫cos³(u)sin⁴(u)du
+- cos has ODD power (3), sin has EVEN power (4)
+- Apply odd-power rule to cos (the ODD one)
+- Save one cos(u)du, convert cos²(u) = 1 - sin²(u)
+- Keep sin⁴(u) as-is
+- Rewrite: ∫(1 - sin²(u))sin⁴(u)cos(u)du
+- Let w = sin(u), dw = cos(u)du
+- Integral becomes: ∫(1 - w²)w⁴ dw = ∫(w⁴ - w⁶)dw
+- Result: w⁵/5 - w⁷/7 + C = sin⁵(u)/5 - sin⁷(u)/7 + C
+
+WRONG APPROACH (NEVER DO THIS):
+- Converting sin⁴(u) = (1-cos²(u))² ← NO! sin is EVEN, don't convert it
+- This creates cos³, cos⁵, cos⁷ which is unnecessarily complex
+
+EVEN-EVEN CASE ONLY: Both powers even → use half-angle identities.
 
 --- sec / tan (CRITICAL - FOLLOW EXACTLY) ---
 
@@ -373,8 +393,12 @@ EXAMPLE: ∫cos³(eᵗ)sin⁴(eᵗ)eᵗ dt from 0 to 1
 Step 1: Let u = eᵗ, du = eᵗdt. Bounds: t=0→u=1, t=1→u=e
 Step 2: Integral becomes ∫cos³(u)sin⁴(u)du from 1 to e
 Step 3: NOW apply trig integration rules to cos³(u)sin⁴(u):
-  - cos has ODD power (3) → save one cos(u)du
+  - cos has ODD power (3), sin has EVEN power (4)
+  - 🚨 Apply odd-power rule to cos (the ODD one), NOT to sin
+  - Save one cos(u)du
   - Convert cos²(u) = 1 - sin²(u)
+  - Keep sin⁴(u) as-is (do NOT expand it)
+  - Rewrite: ∫(1 - sin²(u))sin⁴(u)cos(u)du
   - Let w = sin(u), dw = cos(u)du
   - Integral becomes ∫(1-w²)w⁴ dw = ∫(w⁴ - w⁶)dw
 Step 4: Integrate: w⁵/5 - w⁷/7
@@ -383,6 +407,11 @@ Step 6: Evaluate bounds u=1 to u=e:
   [sin⁵(e)/5 - sin⁷(e)/7] - [sin⁵(1)/5 - sin⁷(1)/7]
 
 Final answer: $$\\boxed{\\frac{\\sin^5(e)}{5} - \\frac{\\sin^7(e)}{7} - \\frac{\\sin^5(1)}{5} + \\frac{\\sin^7(1)}{7}}$$
+
+🚨 WRONG APPROACH (NEVER DO THIS):
+Converting sin⁴(u) = (1-cos²(u))² creates cos³, cos⁵, cos⁷ integrals.
+This is WRONG because sin has EVEN power — you should NOT convert it.
+Always convert the ODD-powered function, keep the EVEN-powered one intact.
 
 This is a COMPLETE answer. sin(e) and sin(1) are EXACT VALUES — do not approximate.
 
